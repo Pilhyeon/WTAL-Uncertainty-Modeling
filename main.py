@@ -82,4 +82,4 @@ if __name__ == "__main__":
                 os.path.join(config.output_path, "best_record_seed_{}.txt".format(config.seed)))
 
             torch.save(net.state_dict(), os.path.join(args.model_path, \
-                "BMUE_model_seed_{}.pkl".format(config.seed)))
+                "model_seed_{}.pkl".format(config.seed)))
