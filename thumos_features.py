@@ -24,9 +24,9 @@ class ThumosFeature(data.Dataset):
         if self.modal == 'all':
             self.feature_path = []
             for _modal in ['rgb', 'flow']:
-                self.feature_path.append(os.path.join(data_path, 'features_25fps', self.mode, _modal))
+                self.feature_path.append(os.path.join(data_path, 'features', self.mode, _modal))
         else:
-            self.feature_path = os.path.join(data_path, 'features_25fps', self.mode, self.modal)
+            self.feature_path = os.path.join(data_path, 'features', self.mode, self.modal)
 
         split_path = os.path.join(data_path, 'split_{}.txt'.format(self.mode))
         split_file = open(split_path, 'r')
