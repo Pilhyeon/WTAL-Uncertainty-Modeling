@@ -70,8 +70,7 @@ $ bash run_eval.sh
 ~~~~
 
 ## References
-This repo was built upon our previous model '[Background Suppression Network for Weakly-supervised Temporal Action Localization](https://arxiv.org/abs/1911.09963)' (AAAI 2020).
-* [BaS-Net](https://github.com/Pilhyeon/BaSNet-pytorch)
+We note that this repo was built upon our previous model 'Background Suppression Network for Weakly-supervised Temporal Action Localization ' (AAAI 2020). [[paper](https://arxiv.org/abs/1911.09963)] [[code](https://github.com/Pilhyeon/BaSNet-pytorch)]
 
 We also referenced the repos below for the code.
 
