@@ -69,17 +69,25 @@ class BMUE(nn.Module):
         feat_magnitudes_rev = torch.max(feat_magnitudes, dim=1, keepdim=True)[0] - feat_magnitudes
         feat_magnitudes_rev_drop = feat_magnitudes_rev * select_idx
 
-        idx_act = torch.topk(feat_magnitudes_drop, k_act, dim=1)[1]
+        # slicing after sorting is much faster than torch.topk (https://github.com/pytorch/pytorch/issues/22812)
+        # idx_act = torch.topk(feat_magnitudes_drop, k_act, dim=1)[1]
+        _, sorted_idx = feat_magnitudes_drop.sort(descending=True, dim=1)
+        idx_act = sorted_idx[:, :k_act]
         idx_act_feat = idx_act.unsqueeze(2).expand([-1, -1, features.shape[2]])
-        
-        idx_bkg = torch.topk(feat_magnitudes_rev_drop, k_bkg, dim=1)[1]
+
+        # idx_bkg = torch.topk(feat_magnitudes_rev_drop, k_bkg, dim=1)[1]
+        _, sorted_idx = feat_magnitudes_rev_drop.sort(descending=True, dim=1)
+        idx_bkg = sorted_idx[:, :k_bkg]
         idx_bkg_feat = idx_bkg.unsqueeze(2).expand([-1, -1, features.shape[2]])
         idx_bkg_cas = idx_bkg.unsqueeze(2).expand([-1, -1, cas.shape[2]])
         
         feat_act = torch.gather(features, 1, idx_act_feat)
         feat_bkg = torch.gather(features, 1, idx_bkg_feat)
 
-        score_act = torch.mean(torch.topk(cas, k_act, dim=1)[0], dim=1)
+        # score_act = torch.mean(torch.topk(cas, k_act, dim=1)[0], dim=1)
+        sorted_scores, _= cas.sort(descending=True, dim=1)
+        topk_scores = sorted_scores[:, :k_act, :]
+        score_act = torch.mean(topk_scores, dim=1)
         score_bkg = torch.mean(torch.gather(cas, 1, idx_bkg_cas), dim=1)
 
         score_act = self.softmax(score_act)
