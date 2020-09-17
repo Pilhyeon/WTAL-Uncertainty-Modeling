@@ -51,8 +51,8 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
             feat_magnitudes = torch.unsqueeze(torch.norm(features, p=2, dim=2), dim=2)
             feat_magnitudes = feat_magnitudes.squeeze().repeat((config.num_classes, 1, 1)).permute(1, 2, 0)
             
+            feat_magnitudes[feat_magnitudes > config.margin] = config.margin
             feat_magnitudes /= config.margin
-            feat_magnitudes[feat_magnitudes > 1] = 1
 
             cas = cas_softmax * feat_magnitudes
 
