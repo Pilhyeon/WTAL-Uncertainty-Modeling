@@ -5,13 +5,13 @@ class CAS_Module(nn.Module):
     def __init__(self, len_feature, num_classes):
         super(CAS_Module, self).__init__()
         self.len_feature = len_feature
-        self.conv_1 = nn.Sequential(
+        self.conv = nn.Sequential(
             nn.Conv1d(in_channels=self.len_feature, out_channels=2048, kernel_size=3,
                       stride=1, padding=1),
             nn.ReLU()
         )
 
-        self.conv_2 = nn.Sequential(
+        self.classifier = nn.Sequential(
             nn.Conv1d(in_channels=2048, out_channels=num_classes, kernel_size=1,
                       stride=1, padding=0, bias=False)
         )
@@ -21,17 +21,17 @@ class CAS_Module(nn.Module):
         # x: (B, T, F)
         out = x.permute(0, 2, 1)
         # out: (B, F, T)
-        out = self.conv_1(out)
+        out = self.conv(out)
         features = out.permute(0, 2, 1)
         out = self.drop_out(out)
-        out = self.conv_2(out)
+        out = self.classifier(out)
         out = out.permute(0, 2, 1)
         # out: (B, T, C + 1)
         return out, features
 
-class BMUE(nn.Module):
-    def __init__(self, len_feature, num_classes, num_segments):
-        super(BMUE, self).__init__()
+class Model(nn.Module):
+    def __init__(self, len_feature, num_classes, r_act, r_bkg):
+        super(Model, self).__init__()
         self.len_feature = len_feature
         self.num_classes = num_classes
 
@@ -41,21 +41,16 @@ class BMUE(nn.Module):
 
         self.softmax_2 = nn.Softmax(dim=2)
 
-        self.num_segments = num_segments
-        self.k_act = num_segments // 8
-        self.k_bkg = num_segments // 6
+        self.r_act = r_act
+        self.r_bkg = r_bkg
 
         self.drop_out = nn.Dropout(p=0.7)
 
 
     def forward(self, x):
-        if self.num_segments != x.shape[1]:
-            num_segments = x.shape[1]
-            k_act = num_segments // 8
-            k_bkg = num_segments // 6
-        else:
-            k_act = self.k_act
-            k_bkg = self.k_bkg
+        num_segments = x.shape[1]
+        k_act = num_segments // self.r_act
+        k_bkg = num_segments // self.r_bkg
 
         cas, features = self.cas_module(x)
 
@@ -69,13 +64,10 @@ class BMUE(nn.Module):
         feat_magnitudes_rev = torch.max(feat_magnitudes, dim=1, keepdim=True)[0] - feat_magnitudes
         feat_magnitudes_rev_drop = feat_magnitudes_rev * select_idx
 
-        # slicing after sorting is much faster than torch.topk (https://github.com/pytorch/pytorch/issues/22812)
-        # idx_act = torch.topk(feat_magnitudes_drop, k_act, dim=1)[1]
         _, sorted_idx = feat_magnitudes_drop.sort(descending=True, dim=1)
         idx_act = sorted_idx[:, :k_act]
         idx_act_feat = idx_act.unsqueeze(2).expand([-1, -1, features.shape[2]])
 
-        # idx_bkg = torch.topk(feat_magnitudes_rev_drop, k_bkg, dim=1)[1]
         _, sorted_idx = feat_magnitudes_rev_drop.sort(descending=True, dim=1)
         idx_bkg = sorted_idx[:, :k_bkg]
         idx_bkg_feat = idx_bkg.unsqueeze(2).expand([-1, -1, features.shape[2]])
@@ -84,7 +76,6 @@ class BMUE(nn.Module):
         feat_act = torch.gather(features, 1, idx_act_feat)
         feat_bkg = torch.gather(features, 1, idx_bkg_feat)
 
-        # score_act = torch.mean(torch.topk(cas, k_act, dim=1)[0], dim=1)
         sorted_scores, _= cas.sort(descending=True, dim=1)
         topk_scores = sorted_scores[:, :k_act, :]
         score_act = torch.mean(topk_scores, dim=1)

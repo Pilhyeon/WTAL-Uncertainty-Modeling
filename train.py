@@ -3,9 +3,10 @@ import torch.nn as nn
 import numpy as np
 
 class BMUE_loss(nn.Module):
-    def __init__(self, alpha, margin):
+    def __init__(self, alpha, beta, margin):
         super(BMUE_loss, self).__init__()
         self.alpha = alpha
+        self.beta = beta
         self.margin = margin
         self.ce_criterion = nn.BCELoss()
 
@@ -20,12 +21,13 @@ class BMUE_loss(nn.Module):
         label_bkg /= torch.sum(label_bkg, dim=1, keepdim=True)
         loss_be = self.ce_criterion(score_bkg, label_bkg)
 
-        loss_act = torch.abs(self.margin - torch.norm(torch.mean(feat_act, dim=1), p=2, dim=1))
+        loss_act = self.margin - torch.norm(torch.mean(feat_act, dim=1), p=2, dim=1)
+        loss_act[loss_act < 0] = 0
         loss_bkg = torch.norm(torch.mean(feat_bkg, dim=1), p=2, dim=1)
 
         loss_um = torch.mean((loss_act + loss_bkg) ** 2)
 
-        loss_total = loss_cls + loss_be + self.alpha * loss_um
+        loss_total = loss_cls + self.alpha * loss_um + self.beta * loss_be
 
         loss["loss_cls"] = loss_cls
         loss["loss_be"] = loss_be

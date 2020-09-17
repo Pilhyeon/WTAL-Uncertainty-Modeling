@@ -151,7 +151,7 @@ class ThumosFeature(data.Dataset):
 
 
     def uniform_sampling(self, length):
-        if self.num_segments == length or length <= self.num_segments:
+        if length <= self.num_segments:
             return np.arange(length).astype(int)
         samples = np.arange(self.num_segments) * length / self.num_segments
         samples = np.floor(samples)

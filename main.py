@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     utils.save_config(config, os.path.join(config.output_path, "config.txt"))
 
-    net = BMUE(config.len_feature, config.num_classes, config.num_segments)
+    net = Model(config.len_feature, config.num_classes, config.r_act, config.r_bkg)
     net = net.cuda()
 
     train_loader = data.DataLoader(
@@ -47,12 +47,12 @@ if __name__ == "__main__":
             worker_init_fn=worker_init_fn)
 
     test_info = {"step": [], "test_acc": [], "average_mAP": [],
-                "mAP@0.3": [], "mAP@0.4": [], "mAP@0.5": [],
-                "mAP@0.6": [], "mAP@0.7": []}
+                "mAP@0.1": [], "mAP@0.2": [], "mAP@0.3": [], 
+                "mAP@0.4": [], "mAP@0.5": [], "mAP@0.6": [], "mAP@0.7": []}
     
     best_mAP = -1
 
-    criterion = BMUE_loss(config.alpha, config.margin)
+    criterion = BMUE_loss(config.alpha, config.beta, config.margin)
 
     optimizer = torch.optim.Adam(net.parameters(), lr=config.lr[0],
         betas=(0.9, 0.999), weight_decay=0.0005)
@@ -72,7 +72,7 @@ if __name__ == "__main__":
             loader_iter = iter(train_loader)
 
         train(net, loader_iter, optimizer, criterion, logger, step)
-        
+            
         test(net, config, logger, test_loader, test_info, step)
 
         if test_info["average_mAP"][-1] > best_mAP:

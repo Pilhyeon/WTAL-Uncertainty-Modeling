@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     utils.save_config(config, os.path.join(config.output_path, "config.txt"))
 
-    net = BMUE(config.len_feature, config.num_classes, config.num_segments)
+    net = Model(config.len_feature, config.num_classes, config.r_act, config.r_bkg)
     net = net.cuda()
 
     test_loader = data.DataLoader(
@@ -37,9 +37,8 @@ if __name__ == "__main__":
             worker_init_fn=worker_init_fn)
 
     test_info = {"step": [], "test_acc": [], "average_mAP": [],
-                "mAP@0.1": [], "mAP@0.2": [], "mAP@0.3": [],
-                "mAP@0.4": [], "mAP@0.5": [], "mAP@0.6": [],
-                "mAP@0.7": [], "mAP@0.8": [], "mAP@0.9": []}
+                "mAP@0.1": [], "mAP@0.2": [], "mAP@0.3": [], 
+                "mAP@0.4": [], "mAP@0.5": [], "mAP@0.6": [], "mAP@0.7": []}
     
     logger = Logger(config.log_path)
         

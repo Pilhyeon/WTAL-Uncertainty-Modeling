@@ -25,10 +25,10 @@ def get_proposal_oic(tList, wtcam, final_score, c_pred, scale, v_len, sampling_f
         if temp_list.any():
             grouped_temp_list = grouping(temp_list)
             for j in range(len(grouped_temp_list)):
-                try:
-                    inner_score = np.mean(wtcam[grouped_temp_list[j], i, 0])
-                except:
-                    import pdb;pdb.set_trace()
+                if len(grouped_temp_list[j]) < 2:
+                    continue
+                
+                inner_score = np.mean(wtcam[grouped_temp_list[j], i, 0])
 
                 len_proposal = len(grouped_temp_list[j])
                 outer_s = max(0, int(grouped_temp_list[j][0] - _lambda * len_proposal))
@@ -66,10 +66,10 @@ def grouping(arr):
 def save_best_record_thumos(test_info, file_path):
     fo = open(file_path, "w")
     fo.write("Step: {}\n".format(test_info["step"][-1]))
-    fo.write("Test_acc: {:.2f}\n".format(test_info["test_acc"][-1]))
+    fo.write("Test_acc: {:.4f}\n".format(test_info["test_acc"][-1]))
     fo.write("average_mAP: {:.4f}\n".format(test_info["average_mAP"][-1]))
     
-    tIoU_thresh = np.linspace(0.3, 0.7, 5)
+    tIoU_thresh = np.linspace(0.1, 0.7, 7)
     for i in range(len(tIoU_thresh)):
         fo.write("mAP@{:.1f}: {:.4f}\n".format(tIoU_thresh[i], test_info["mAP@{:.1f}".format(tIoU_thresh[i])][-1]))
 

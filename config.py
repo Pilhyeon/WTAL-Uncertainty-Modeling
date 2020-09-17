@@ -19,6 +19,10 @@ class Config(object):
         self.log_path = args.log_path
         self.num_workers = args.num_workers
         self.alpha = args.alpha
+        self.beta = args.beta
+        self.margin = args.margin
+        self.r_act = args.r_act
+        self.r_bkg = args.r_bkg
         self.class_thresh = args.class_th
         self.act_thresh_cas = np.arange(0.0, 0.25, 0.025)
         self.act_thresh_magnitudes = np.arange(0.4, 0.625, 0.025)
@@ -28,7 +32,6 @@ class Config(object):
         self.seed = args.seed
         self.feature_fps = 25
         self.num_segments = 750
-        self.margin = args.margin
 
     def __str__(self):
         attrs = vars(self)
