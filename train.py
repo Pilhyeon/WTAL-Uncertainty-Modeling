@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-class BMUE_loss(nn.Module):
+class UM_loss(nn.Module):
     def __init__(self, alpha, beta, margin):
-        super(BMUE_loss, self).__init__()
+        super(UM_loss, self).__init__()
         self.alpha = alpha
         self.beta = beta
         self.margin = margin

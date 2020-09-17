@@ -31,7 +31,7 @@ if __name__ == "__main__":
     train_loader = data.DataLoader(
         ThumosFeature(data_path=config.data_path, mode='train',
                         modal=config.modal, feature_fps=config.feature_fps,
-                        num_segments=config.num_segments,
+                        num_segments=config.num_segments, supervision='weak',
                         seed=config.seed, sampling='random'),
             batch_size=config.batch_size,
             shuffle=True, num_workers=config.num_workers,
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     test_loader = data.DataLoader(
         ThumosFeature(data_path=config.data_path, mode='test',
                         modal=config.modal, feature_fps=config.feature_fps,
-                        num_segments=config.num_segments,
+                        num_segments=config.num_segments, supervision='weak',
                         seed=config.seed, sampling='uniform'),
             batch_size=1,
             shuffle=False, num_workers=config.num_workers,
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     
     best_mAP = -1
 
-    criterion = BMUE_loss(config.alpha, config.beta, config.margin)
+    criterion = UM_loss(config.alpha, config.beta, config.margin)
 
     optimizer = torch.optim.Adam(net.parameters(), lr=config.lr[0],
         betas=(0.9, 0.999), weight_decay=0.0005)

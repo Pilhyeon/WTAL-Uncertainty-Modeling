@@ -36,9 +36,6 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
 
             score_act, _, feat_act, feat_bkg, features, cas_softmax = net(_data)
 
-            feat_magnitudes_act = torch.mean(torch.norm(feat_act, dim=2), dim=1).repeat((config.num_classes, 1, 1)).permute(1, 2, 0)
-            feat_magnitudes_bkg = torch.mean(torch.norm(feat_bkg, dim=2), dim=1).repeat((config.num_classes, 1, 1)).permute(1, 2, 0)
-
             label_np = _label.cpu().data.numpy()
             score_np = score_act[0].cpu().data.numpy()
 
@@ -53,14 +50,16 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
 
             feat_magnitudes = torch.unsqueeze(torch.norm(features, p=2, dim=2), dim=2)
             feat_magnitudes = feat_magnitudes.squeeze().repeat((config.num_classes, 1, 1)).permute(1, 2, 0)
-            feat_magnitudes = utils.minmax_norm(feat_magnitudes, max_val=feat_magnitudes_act, min_val=feat_magnitudes_bkg)
+            
+            feat_magnitudes /= config.margin
+            feat_magnitudes[feat_magnitudes > 1] = 1
 
-            cas = utils.minmax_norm(cas_softmax * feat_magnitudes)
+            cas = cas_softmax * feat_magnitudes
 
             pred = np.where(score_np >= config.class_thresh)[0]
 
             if len(pred) == 0:
-                pred = np.array([np.argmax(score_np[0])])
+                pred = np.array([np.argmax(score_np)])
 
             cas_pred = cas[0].cpu().numpy()[:, pred]
             cas_pred = np.reshape(cas_pred, (num_segments, -1, 1))
@@ -69,7 +68,6 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
             
             proposal_dict = {}
 
-            """ add  """
             feat_magnitudes_np = feat_magnitudes[0].cpu().data.numpy()[:, pred]
             feat_magnitudes_np = np.reshape(feat_magnitudes_np, (num_segments, -1, 1))
             feat_magnitudes_np = utils.upgrade_resolution(feat_magnitudes_np, config.scale)
@@ -128,7 +126,7 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
 
         test_acc = num_correct / num_total
 
-        json_path = os.path.join(config.output_path, 'temp_result.json')
+        json_path = os.path.join(config.output_path, 'result.json')
         with open(json_path, 'w') as f:
             json.dump(final_res, f)
             f.close()

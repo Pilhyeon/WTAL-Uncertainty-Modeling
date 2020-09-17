@@ -30,7 +30,7 @@ if __name__ == "__main__":
     test_loader = data.DataLoader(
         ThumosFeature(data_path=config.data_path, mode='test',
                         modal=config.modal, feature_fps=config.feature_fps,
-                        num_segments=config.num_segments,
+                        num_segments=config.num_segments, supervision='weak',
                         seed=config.seed, sampling='uniform'),
             batch_size=1,
             shuffle=False, num_workers=config.num_workers,

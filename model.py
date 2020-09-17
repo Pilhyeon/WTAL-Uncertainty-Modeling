@@ -26,7 +26,7 @@ class CAS_Module(nn.Module):
         out = self.drop_out(out)
         out = self.classifier(out)
         out = out.permute(0, 2, 1)
-        # out: (B, T, C + 1)
+        # out: (B, T, C)
         return out, features
 
 class Model(nn.Module):
