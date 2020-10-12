@@ -36,6 +36,9 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
 
             score_act, _, feat_act, feat_bkg, features, cas_softmax = net(_data)
 
+            feat_magnitudes_act = torch.mean(torch.norm(feat_act, dim=2), dim=1)
+            feat_magnitudes_bkg = torch.mean(torch.norm(feat_bkg, dim=2), dim=1)
+
             label_np = _label.cpu().data.numpy()
             score_np = score_act[0].cpu().data.numpy()
 
@@ -48,13 +51,12 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
             num_correct += np.sum((correct_pred == config.num_classes).astype(np.float32))
             num_total += correct_pred.shape[0]
 
-            feat_magnitudes = torch.unsqueeze(torch.norm(features, p=2, dim=2), dim=2)
-            feat_magnitudes = feat_magnitudes.squeeze().repeat((config.num_classes, 1, 1)).permute(1, 2, 0)
-            
-            feat_magnitudes[feat_magnitudes > config.margin] = config.margin
-            feat_magnitudes /= config.margin
+            feat_magnitudes = torch.norm(features, p=2, dim=2)
 
-            cas = cas_softmax * feat_magnitudes
+            feat_magnitudes = utils.minmax_norm(feat_magnitudes, max_val=feat_magnitudes_act, min_val=feat_magnitudes_bkg)
+            feat_magnitudes = feat_magnitudes.repeat((config.num_classes, 1, 1)).permute(1, 2, 0)
+
+            cas = utils.minmax_norm(cas_softmax * feat_magnitudes)
 
             pred = np.where(score_np >= config.class_thresh)[0]
 
