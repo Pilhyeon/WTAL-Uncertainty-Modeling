@@ -1,7 +1,7 @@
 # WTAL-Uncertainty Modeling
 ### Official Pytorch Implementation of '[Weakly-supervised Temporal Action Localization by Uncertainty Modeling](https://arxiv.org/abs/2006.07006)'
 
-![architecture](https://user-images.githubusercontent.com/16102333/84629197-e0989180-af24-11ea-8377-dfc590e74fbb.png)
+![architecture](https://user-images.githubusercontent.com/16102333/102174520-03f6c600-3ee1-11eb-953b-ffce66d1ccbe.png)
 
 > **Background Modeling via Uncertainty Estimation for Weakly-supervised Action Localization**<br>
 > Pilhyeon Lee (Yonsei Univ.), Jinglu Wang (Microsoft Research), Yan Lu (Microsoft Research), Hyeran Byun (Yonsei Univ.)
