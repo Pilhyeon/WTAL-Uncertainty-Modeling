@@ -1,5 +1,5 @@
-# Background Modeling via Uncertainty Estimation
-### Pytorch Implementation of '[Background Modeling via Uncertainty Estimation for Weakly-supervised Action Localization](https://arxiv.org/abs/2006.07006)'
+# WTAL-Uncertainty Modeling
+### Official Pytorch Implementation of '[Weakly-supervised Temporal Action Localization by Uncertainty Modeling](https://arxiv.org/abs/2006.07006)'
 
 ![architecture](https://user-images.githubusercontent.com/16102333/84629197-e0989180-af24-11ea-8377-dfc590e74fbb.png)
 
@@ -8,7 +8,7 @@
 >
 > Paper: https://arxiv.org/abs/2006.07006
 >
-> **Abstract:** *Weakly-supervised temporal action localization aims to detect intervals of action instances with only video-level action labels for training. A crucial challenge is to separate frames of action classes from remaining, denoted as background frames (i.e., frames not belonging to any action class). Previous methods attempt background modeling by either synthesizing pseudo background videos with static frames or introducing an auxiliary class for background. However, they overlook an essential fact that background frames could be dynamic and inconsistent. Accordingly, we cast the problem of identifying background frames as out-of-distribution detection and isolate it from conventional action classification. Beyond our base action localization network, we propose a module to estimate the probability of being background (i.e., uncertainty [20]), which allows us to learn uncertainty given only video-level labels via multiple instance learning. A background entropy loss is further designed to reject background frames by forcing them to have uniform probability distribution for action classes. Extensive experiments verify the effectiveness of our background modeling and show that our method significantly outperforms state-of-the-art methods on the standard benchmarks - THUMOS'14 and ActivityNet (1.2 and 1.3).*
+> **Abstract:** *Weakly-supervised temporal action localization aims to learn detecting temporal intervals of action classes with only video-level labels. To this end, it is crucial to separate frames of action classes from the background frames (i.e., frames not belonging to any action classes). In this paper, we present a new perspective on background frames where they are modeled as out-of-distribution samples regarding their inconsistency. Then, background frames can be detected by estimating the probability of each frame being out-of-distribution, known as uncertainty, but it is infeasible to directly learn uncertainty without frame-level labels. To realize the uncertainty learning in the weakly-supervised setting, we leverage the multiple instance learning formulation. Moreover, we further introduce a background entropy loss to better discriminate background frames by encouraging their in-distribution (action) probabilities to be uniformly distributed over all action classes. Experimental results show that our uncertainty modeling is effective at alleviating the interference of background frames and brings a large performance gain without bells and whistles. We demonstrate that our model significantly outperforms state-of-the-art methods on the benchmarks, THUMOS'14 and ActivityNet (1.2 & 1.3). Our code is available at https://github.com/Pilhyeon/WTAL-Uncertainty-Modeling.*
 
 ## (2020/12/13) This work was accepted to AAAI 2021!
 Working on preparing ActivityNet materials. Please stay tuned. 
@@ -92,8 +92,8 @@ We also referenced the repos below for the code.
 If you find this code useful, please cite our paper.
 
 ~~~~
-@article{lee2020BMUncertainty,
-  title={Background Modeling via Uncertainty Estimation for Weakly-supervised Action Localization},
+@article{lee2020WTALUncertainty,
+  title={Weakly-supervised Temporal Action Localization by Uncertainty Modeling},
   author={Pilhyeon Lee and Jinglu Wang and Yan Lu and Hyeran Byun},
   journal={ArXiv},
   year={2020},
