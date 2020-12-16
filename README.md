@@ -1,4 +1,4 @@
-# WTAL-Uncertainty Modeling
+# WTAL-Uncertainty-Modeling
 ### Official Pytorch Implementation of '[Weakly-supervised Temporal Action Localization by Uncertainty Modeling](https://arxiv.org/abs/2006.07006)'
 
 ![architecture](https://user-images.githubusercontent.com/16102333/102174520-03f6c600-3ee1-11eb-953b-ffce66d1ccbe.png)
@@ -10,7 +10,7 @@
 >
 > **Abstract:** *Weakly-supervised temporal action localization aims to learn detecting temporal intervals of action classes with only video-level labels. To this end, it is crucial to separate frames of action classes from the background frames (i.e., frames not belonging to any action classes). In this paper, we present a new perspective on background frames where they are modeled as out-of-distribution samples regarding their inconsistency. Then, background frames can be detected by estimating the probability of each frame being out-of-distribution, known as uncertainty, but it is infeasible to directly learn uncertainty without frame-level labels. To realize the uncertainty learning in the weakly-supervised setting, we leverage the multiple instance learning formulation. Moreover, we further introduce a background entropy loss to better discriminate background frames by encouraging their in-distribution (action) probabilities to be uniformly distributed over all action classes. Experimental results show that our uncertainty modeling is effective at alleviating the interference of background frames and brings a large performance gain without bells and whistles. We demonstrate that our model significantly outperforms state-of-the-art methods on the benchmarks, THUMOS'14 and ActivityNet (1.2 & 1.3).*
 
-## (2020/12/13) This work was accepted to AAAI 2021!
+## (2020/12/13) This work got accepted to AAAI 2021!
 Working on preparing ActivityNet materials. Please stay tuned. 
 
 
