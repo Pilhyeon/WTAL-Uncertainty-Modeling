@@ -7,6 +7,6 @@ tensorboard==1.15
 tensorboard-logger==0.1.0
 tensorflow==1.15.4
 tensorflow-estimator==1.13.0
-torch==1.0.0
+torch==1.6.0
 torchvision==0.2.1
 tqdm==4.31.1
