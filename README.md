@@ -19,6 +19,7 @@ Working on preparing ActivityNet materials. Please stay tuned.
 * Python 3.6
 * Pytorch 1.6
 * Tensorflow 1.15 (for Tensorboard)
+* CUDA 10.2
 
 ### Depencencies
 You can set up the environments by using `$ pip3 install -r requirements.txt`.
