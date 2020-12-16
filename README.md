@@ -16,8 +16,8 @@ Working on preparing ActivityNet materials. Please stay tuned.
 
 ## Prerequisites
 ### Recommended Environment
-* Python 3.5
-* Pytorch 1.0
+* Python 3.6
+* Pytorch 1.6
 * Tensorflow 1.15 (for Tensorboard)
 
 ### Depencencies
