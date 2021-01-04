@@ -74,7 +74,7 @@ $ bash run.sh
 ~~~~
 
 ### Evaulation
-The pre-trained model can be found [here](https://drive.google.com/file/d/1W2LNpX-PO-FJ5gX3Zhrlv5hkH6xJKUrq/view?usp=sharing).
+The pre-trained model can be found [here](https://drive.google.com/file/d/1XA3SR3wob7b9m528OPd6SSpiu5cMvCgJ/view?usp=sharing).
 You can evaluate the model by running the command below.
 
 ~~~~
