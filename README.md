@@ -30,7 +30,7 @@ You can set up the environments by using `$ pip3 install -r requirements.txt`.
 
 2. Extract features with two-stream I3D networks
     - We recommend extracting features using [this repo](https://github.com/piergiaj/pytorch-i3d).
-    - For convenience, we provide the features we used. You can find them [here](https://drive.google.com/file/d/1nStGuSenq-8eCKG9-jpgTMF6LJ8tw7_a/view?usp=sharing).
+    - For convenience, we provide the features we used. You can find them [here](https://drive.google.com/file/d/1NqaDRo782bGZKo662I0rI_cvpDT67VQU/view?usp=sharing).
     
 3. Place the features inside the `dataset` folder.
     - Please ensure the data structure is as below.
@@ -74,7 +74,7 @@ $ bash run.sh
 ~~~~
 
 ### Evaulation
-The pre-trained model can be found [here](https://drive.google.com/file/d/1XA3SR3wob7b9m528OPd6SSpiu5cMvCgJ/view?usp=sharing).
+The pre-trained model can be found [here](https://drive.google.com/file/d/1nStGuSenq-8eCKG9-jpgTMF6LJ8tw7_a/view?usp=sharing).
 You can evaluate the model by running the command below.
 
 ~~~~
