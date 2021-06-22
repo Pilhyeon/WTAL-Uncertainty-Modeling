@@ -93,12 +93,12 @@ We also referenced the repos below for the code.
 If you find this code useful, please cite our paper.
 
 ~~~~
-@article{lee2020WTAL-Uncertainty,
+@inproceedings{lee2021WTAL-Uncertainty,
   title={Weakly-supervised Temporal Action Localization by Uncertainty Modeling},
   author={Pilhyeon Lee and Jinglu Wang and Yan Lu and Hyeran Byun},
-  journal={ArXiv},
-  year={2020},
-  volume={abs/2006.07006}
+  booktitle={The 35th AAAI Conference on Artificial Intelligence},
+  pages={1854--1862},
+  year={2021}
 }
 ~~~~
 
